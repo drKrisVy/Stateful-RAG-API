@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # 1. The Core AI Application
+  api:
+    build: .
+    container_name: rag_api
+    ports:
+      - "8000:8000"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    networks:
+      - enterprise_network
+
+  # 2. The Semantic Cache (Memory)
+  redis:
+    image: redis:alpine
+    container_name: rag_cache
+    ports:
+      - "6379:6379"
+    networks:
+      - enterprise_network
+
+  # 3. The Telemetry Scraper (Observability)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus_metrics
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - enterprise_network
+
+  # 4. The UI Dashboard (LLMWatch Visuals)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana_dashboard
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - enterprise_network
+
+networks:
+  enterprise_network:
+    driver: bridge

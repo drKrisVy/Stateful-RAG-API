@@ -1,0 +1,43 @@
+# =========================
+# API Keys & Secrets (CRITICAL)
+# =========================
+.env
+.env.local
+.secrets/
+
+# =========================
+# Python & Virtual Environments
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+*.egg-info/
+.eggs/
+
+# =========================
+# Vector DB & Datasets
+# =========================
+# Ignore the generated FAISS indexes so you don't push massive binaries
+faiss_index/
+# Ignore raw PDFs if they are huge, but you can comment this out if you want them in the repo
+*.pdf
+
+# =========================
+# Logs & Telemetry
+# =========================
+*.log
+logs/
+
+# =========================
+# OS & IDE Files
+# =========================
+.DS_Store
+.vscode/
+.idea/
+*.swp
